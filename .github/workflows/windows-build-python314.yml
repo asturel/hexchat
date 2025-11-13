@@ -52,6 +52,9 @@ jobs:
           Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/perl-5.20.0-${{ matrix.arch }}.7z -OutFile deps\perl-${{ matrix.arch }}.7z
           & 7z.exe x deps\perl-${{ matrix.arch }}.7z -oC:\gtk-build\perl-5.20\${{ matrix.platform }}
 
+          New-Item -Path "c:\gtk-build" -Name "python-3.8" -ItemType "Directory"
+          New-Item -Path "c:\gtk-build\python-3.8" -Name "${{ matrix.platform }}" -ItemType SymbolicLink -Value "${{ runner.tool_cache }}/windows/Python/3.14.0/${{ matrix.arch }}"
+          
           python -m pip install --upgrade pip
           python -m pip install cffi
         shell: powershell
