@@ -13,18 +13,20 @@ jobs:
     runs-on: windows-2022
     strategy:
       matrix:
-        platform: [x64, win32]
-        arch: [x64, x86]
-        exclude:
-          - platform: x64
-            arch: x86
-          - platform: win32
-            arch: x64
+        platform: [x64]
+        arch: [x64]
       fail-fast: false
 
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install .NET 4.6.1 Developer Pack
+        run: |
+          choco install netfx-4.6.1-devpack -y      
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+        
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -64,10 +66,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install cffi
         shell: powershell
-        
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-        
+               
       - name: Build
         run: |
           msbuild win32\hexchat.sln /m /verbosity:minimal /p:Configuration=Release /p:Platform=${{ matrix.platform }}
