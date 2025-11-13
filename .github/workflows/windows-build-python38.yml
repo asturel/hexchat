@@ -1,4 +1,4 @@
-name: Windows Build (Python 3.14)
+name: Windows Build (Python 3.8)
 on:
   push:
     branches:
