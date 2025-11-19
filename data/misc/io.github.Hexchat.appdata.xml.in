@@ -27,6 +27,14 @@
     <id>hexchat.desktop</id>
   </provides>
   <releases>
+    <release date="???" version="2.16.3">
+      <description>
+        <p>This is a minor release with small improvements and fixes:</p>
+        <ul>
+          <li>Remove deprecated fishlim plugin</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-02-07" version="2.16.2">
       <description>
         <p>This is a minor release with small improvements and fixes:</p>
