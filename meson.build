@@ -24,7 +24,7 @@ global_deps = []
 if cc.get_id() == 'msvc'
   libssl_dep = cc.find_library('libssl')
 else
-  libssl_dep = dependency('openssl', version: '>= 0.9.8',
+  libssl_dep = dependency('openssl', version: '>= 3.1.0',
                           required: get_option('tls'))
 endif
 
