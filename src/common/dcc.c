@@ -100,20 +100,6 @@ static int new_id(void)
 	return id++;
 }
 
-static double
-timeval_diff (GTimeVal *greater,
-				 GTimeVal *less)
-{
-	long usecdiff;
-	double result;
-	
-	result = greater->tv_sec - less->tv_sec;
-	usecdiff = (long) greater->tv_usec - less->tv_usec;
-	result += (double) usecdiff / 1000000;
-	
-	return result;
-}
-
 static void
 dcc_unthrottle (struct DCC *dcc)
 {
@@ -127,15 +113,15 @@ dcc_unthrottle (struct DCC *dcc)
 static void
 dcc_calc_cps (struct DCC *dcc)
 {
-	GTimeVal now;
+	GDateTime *now, *firstcpsdatetime, *lastcpsdatetime;
 	gint64 oldcps;
-	double timediff, startdiff;
+	GTimeSpan timediff, startdiff;
 	int glob_throttle_bit, wasthrottled;
 	gint64 *cpssum;
 	int glob_limit;
 	goffset pos, posdiff;
 
-	g_get_current_time (&now);
+	now = g_date_time_new_now_utc ();
 
 	/* the pos we use for sends is an average
 		between pos and ack */
@@ -155,17 +141,21 @@ dcc_calc_cps (struct DCC *dcc)
 		glob_limit = prefs.hex_dcc_global_max_get_cps;
 	}
 
-	if (!dcc->firstcpstv.tv_sec && !dcc->firstcpstv.tv_usec)
-		dcc->firstcpstv = now;
+	if (!dcc->firstcpsms && !dcc->firstcpsms)
+		dcc->firstcpsms = g_date_time_to_unix_usec (now);
 	else
 	{
-		startdiff = timeval_diff (&now, &dcc->firstcpstv);
+		firstcpsdatetime = g_date_time_new_from_unix_utc_usec (dcc->firstcpsms);
+		startdiff = g_date_time_difference (now, firstcpsdatetime) / 1000000;
+		g_date_time_unref (firstcpsdatetime);
 		if (startdiff < 1)
 			startdiff = 1;
 		else if (startdiff > CPS_AVG_WINDOW)
 			startdiff = CPS_AVG_WINDOW;
 
-		timediff = timeval_diff (&now, &dcc->lastcpstv);
+		lastcpsdatetime = g_date_time_new_from_unix_utc_usec (dcc->lastcpsms);
+		timediff = g_date_time_difference (now, lastcpsdatetime) / 1000000;
+		g_date_time_unref (lastcpsdatetime);
 		if (timediff > startdiff)
 			timediff = startdiff = 1;
 
@@ -177,7 +167,8 @@ dcc_calc_cps (struct DCC *dcc)
 	}
 
 	dcc->lastcpspos = pos;
-	dcc->lastcpstv = now;
+	dcc->lastcpsms = g_date_time_to_unix_usec (now);
+	g_date_time_unref (now);
 
 	/* now check cps against set limits... */
 	wasthrottled = dcc->throttled;

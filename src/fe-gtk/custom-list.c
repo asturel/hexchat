@@ -720,7 +720,7 @@ custom_list_resort (CustomList * custom_list)
 		return;
 
 	/* resort */
-	g_qsort_with_data (custom_list->rows,
+	g_sort_array (custom_list->rows,
 							 custom_list->num_rows,
 							 sizeof (chanlistrow *),
 							 (GCompareDataFunc) custom_list_qsort_compare_func,
