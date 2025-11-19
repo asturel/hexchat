@@ -190,7 +190,6 @@ if meson.version().version_compare('>= 0.53.0')
     'Python': get_option('with-python'),
     'Perl': get_option('with-perl'),
     'Perl Legacy API': get_option('with-perl-legacy-api'),
-    'FiSH': get_option('with-fishlim'),
     'Sysinfo': get_option('with-sysinfo'),
     'DCC Checksum': get_option('with-checksum'),
   }, section: 'Plugins')

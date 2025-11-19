@@ -18,10 +18,6 @@ if get_option('with-checksum')
   subdir('checksum')
 endif
 
-if get_option('with-fishlim')
-  subdir('fishlim')
-endif
-
 if get_option('with-lua') != 'false'
   subdir('lua')
 endif

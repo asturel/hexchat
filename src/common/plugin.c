@@ -488,7 +488,6 @@ plugin_auto_load (session *sess)
 	 * user plugins should go to <config>, leave Program Files alone! */
 	for_files (lib_dir, "hcchecksum.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcexec.dll", plugin_auto_load_cb);
-	for_files (lib_dir, "hcfishlim.dll", plugin_auto_load_cb);
 	for_files(lib_dir, "hclua.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcperl.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcpython3.dll", plugin_auto_load_cb);

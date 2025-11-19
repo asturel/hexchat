@@ -80,12 +80,6 @@ if get_option('plugin')
     ]
   endif
 
-  if get_option('with-fishlim')
-    plugin_metainfo += [
-      ['Fishlim', 'Allows setting a key for encrypted conversations', 'MIT AND GPL-2.0+']
-    ]
-  endif
-
   if get_option('with-lua') != 'false'
     plugin_metainfo += [
       ['Lua', 'Provides a scripting interface in Lua', 'MIT']

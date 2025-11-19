@@ -41,9 +41,6 @@ option('with-checksum', type: 'boolean',
 option('with-exec', type: 'boolean',
   description: '/exec plugin, Windows only'
 )
-option('with-fishlim', type: 'boolean',
-  description: 'Fish encryption plugin, requires openssl'
-)
 option('with-lua', type: 'string', value: 'luajit',
   description: 'Lua scripting plugin, value is pkg-config name to use or "false"'
 )
