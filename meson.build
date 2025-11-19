@@ -43,6 +43,8 @@ config_h.set('USE_LIBCANBERRA', libcanberra_dep.found())
 config_h.set('USE_DBUS', dbus_glib_dep.found())
 config_h.set('USE_PLUGIN', get_option('plugin'))
 
+config_h.set('OPENSSL_NO_DEPRECATED', true)
+
 config_h.set('G_DISABLE_SINGLE_INCLUDES', true)
 config_h.set('GTK_DISABLE_DEPRECATED', true)
 config_h.set('GTK_DISABLE_SINGLE_INCLUDES', true)
