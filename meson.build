@@ -45,9 +45,12 @@ config_h.set('USE_PLUGIN', get_option('plugin'))
 
 config_h.set('OPENSSL_NO_DEPRECATED', true)
 
+config_h.set('G_DISABLE_DEPRECATED', true)
 config_h.set('G_DISABLE_SINGLE_INCLUDES', true)
 config_h.set('GTK_DISABLE_DEPRECATED', true)
 config_h.set('GTK_DISABLE_SINGLE_INCLUDES', true)
+config_h.set('GDK_DISABLE_DEPRECATED', true)
+config_h.set('GDK_PIXBUF_DISABLE_DEPRECATED', true)
 config_h.set('GDK_PIXBUF_DISABLE_SINGLE_INCLUDES', true)
 config_h.set('GLIB_VERSION_MAX_ALLOWED', 'GLIB_VERSION_2_84')
 config_h.set('GLIB_VERSION_MIN_REQUIRED', 'GLIB_VERSION_2_84')
