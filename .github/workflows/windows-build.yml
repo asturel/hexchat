@@ -9,16 +9,11 @@ on:
 
 jobs:
   windows_build:
-    runs-on: windows-2019
+    runs-on: windows-2025
     strategy:
       matrix:
-        platform: [x64, win32]
-        arch: [x64, x86]
-        exclude:
-          - platform: x64
-            arch: x86
-          - platform: win32
-            arch: x64
+        platform: [x64]
+        arch: [x64]
       fail-fast: false
 
     steps:
