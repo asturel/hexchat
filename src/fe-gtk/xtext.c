@@ -363,6 +363,7 @@ xtext_draw_layout_line (GdkDrawable      *drawable,
 								gint              y,
 								PangoLayoutLine  *line)
 {
+	cairo_t *cr;
 	GSList *tmp_list = line->runs;
 	PangoRectangle logical_rect;
 	gint x_off = 0;
@@ -374,8 +375,11 @@ xtext_draw_layout_line (GdkDrawable      *drawable,
 		pango_glyph_string_extents (run->glyphs, run->item->analysis.font,
 											 NULL, &logical_rect);
 
-		gdk_draw_glyphs (drawable, gc, run->item->analysis.font,
-							  x + x_off / PANGO_SCALE, y, run->glyphs);
+
+		cr = gdk_cairo_create (drawable);
+		cairo_translate (cr, x + x_off / PANGO_SCALE, y);
+		pango_cairo_show_glyph_string (cr, run->item->analysis.font, run->glyphs);
+		cairo_destroy (cr);
 
 		x_off += logical_rect.width;
 		tmp_list = tmp_list->next;
