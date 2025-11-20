@@ -3847,9 +3847,8 @@ mg_drag_drop_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, guint
 gboolean
 mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, guint time, gpointer scbar)
 {
-	GdkGC *gc;
+	cairo_t *cr;
 	GdkColor col;
-	GdkGCValues val;
 	int half, width, height;
 	int ox, oy;
 	GdkDrawable *draw;
@@ -3876,16 +3875,12 @@ mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, gui
 		draw = gtk_widget_get_window (widget);
 	}
 
-	val.subwindow_mode = GDK_INCLUDE_INFERIORS;
-	val.graphics_exposures = 0;
-	val.function = GDK_XOR;
-
-	gc = gdk_gc_new_with_values (gtk_widget_get_window (widget), &val, GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW | GDK_GC_FUNCTION);
+	cr = gdk_cairo_create (draw);
 	col.red = rand() % 0xffff;
 	col.green = rand() % 0xffff;
 	col.blue = rand() % 0xffff;
 	gdk_colormap_alloc_color (gtk_widget_get_colormap (widget), &col, FALSE, TRUE);
-	gdk_gc_set_foreground (gc, &col);
+	gdk_cairo_set_source_color (cr, &col);
 
 	half = height / 2;
 
@@ -3894,27 +3889,30 @@ mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, gui
 	paned = (GtkPaned *)widget->parent->parent;
 	if (paned->child1 != NULL && paned->child2 != NULL)
 	{
-		gdk_draw_rectangle (draw, gc, 0, 1, 2, width - 3, height - 4);
-		gdk_draw_rectangle (draw, gc, 0, 0, 1, width - 1, height - 2);
-		g_object_unref (gc);
+		cairo_rectangle(cr, 1, 2, width - 3, height - 4);
+		cairo_rectangle (cr, 0, 1, width - 1, height - 2);
+		cairo_stroke(cr);
+		cairo_destroy(cr);
 		return TRUE;
 	}
 #endif
 
 	if (y < half)
 	{
-		gdk_draw_rectangle (draw, gc, FALSE, 1 + ox, 2 + oy, width - 3, half - 4);
-		gdk_draw_rectangle (draw, gc, FALSE, 0 + ox, 1 + oy, width - 1, half - 2);
+		cairo_rectangle(cr, 1 + ox, 2 + oy, width - 3, half - 4);
+		cairo_rectangle (cr, 0 + ox, 1 + oy, width - 1, half - 2);
+		cairo_stroke(cr);
 		gtk_widget_queue_draw_area (widget, ox, half + oy, width, height - half);
 	}
 	else
 	{
-		gdk_draw_rectangle (draw, gc, FALSE, 0 + ox, half + 1 + oy, width - 1, half - 2);
-		gdk_draw_rectangle (draw, gc, FALSE, 1 + ox, half + 2 + oy, width - 3, half - 4);
+		cairo_rectangle(cr, 0 + ox, half + 1 + oy, width - 1, half - 2);
+		cairo_rectangle(cr, 1 + ox, half + 2 + oy, width - 3, half - 4);
+		cairo_stroke(cr);
 		gtk_widget_queue_draw_area (widget, ox, oy, width, half);
 	}
 
-	g_object_unref (gc);
+	cairo_destroy(cr);
 
 	return TRUE;
 }
